@@ -25,36 +25,68 @@ export default [
             routes: [
               {
                 path: '/',
-                redirect: '/welcome',
+                redirect: '/home',
               },
               {
-                path: '/welcome',
-                name: 'welcome',
-                icon: 'smile',
-                component: './Welcome',
+                path: '/home',
+                name: 'home',
+                icon: 'home',
+                component: './Home',
               },
               {
-                path: '/admin',
-                name: 'admin',
-                icon: 'crown',
-                component: './Admin',
-                authority: ['admin'],
-                routes: [
-                  {
-                    path: '/admin/sub-page',
-                    name: 'sub-page',
-                    icon: 'smile',
-                    component: './Welcome',
-                    authority: ['admin'],
-                  },
-                ],
+                name: 'data-show',
+                icon: 'areaChart',
+                path: '/dataShow',
+                component: './DataShow',
               },
               {
-                name: 'list.table-list',
-                icon: 'table',
-                path: '/list',
-                component: './TableList',
+                name: 'data-query',
+                icon: 'search',
+                path: '/dataQuery',
+                component: './DataQuery',
               },
+              {
+                name: 'data-upload',
+                icon: 'upload',
+                path: '/dataUpload',
+                component: './DataUpload',
+              },
+              {
+                name: 'data-config',
+                icon: 'setting',
+                path: '/dataConfig',
+                component: './DataConfig',
+              },
+              {
+                name: 'data-main',
+                icon: 'inbox',
+                path: '/dataMain',
+                component: './DataMain',
+              },
+              {
+                name: 'manger',
+                icon: 'user',
+                path: '/manger',
+                component: './Manger',
+              },
+
+              // {
+              //   path: '/admin',
+              //   name: 'admin',
+              //   icon: 'crown',
+              //   component: './Admin',
+              //   authority: ['admin'],
+              //   routes: [
+              //     {
+              //       path: '/admin/sub-page',
+              //       name: 'sub-page',
+              //       icon: 'smile',
+              //       component: './Home',
+              //       authority: ['admin'],
+              //     },
+              //   ],
+              // },
+
               {
                 component: './404',
               },

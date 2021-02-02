@@ -7,7 +7,7 @@ import {
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
-import { Alert, Space, message, Tabs } from 'antd';
+import { Alert, Space, message, Button } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, connect, FormattedMessage } from 'umi';
@@ -46,13 +46,18 @@ const Login = (props) => {
           autoLogin: true,
         }}
         submitter={{
-          render: (_, dom) => dom.pop(),
-          submitButtonProps: {
-            loading: submitting,
-            size: 'large',
-            style: {
-              width: '100%',
-            },
+          render: (props, doms) => {
+            console.log(props);
+            return (
+              <div className={styles.submit}>
+                <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
+                  <FormattedMessage id="pages.login.login"/>
+                </Button>
+                <Button type="button" key="rest" onClick={() => props.form?.resetFields()}>
+                  <FormattedMessage id="pages.login.reset"/>
+                </Button>
+              </div>
+            );
           },
         }}
         onFinish={(values) => {
@@ -60,23 +65,6 @@ const Login = (props) => {
           return Promise.resolve();
         }}
       >
-        <Tabs activeKey={type} onChange={setType}>
-          <Tabs.TabPane
-            key="account"
-            tab={intl.formatMessage({
-              id: 'pages.login.accountLogin.tab',
-              defaultMessage: '账户密码登录',
-            })}
-          />
-          <Tabs.TabPane
-            key="mobile"
-            tab={intl.formatMessage({
-              id: 'pages.login.phoneLogin.tab',
-              defaultMessage: '手机号登录',
-            })}
-          />
-        </Tabs>
-
         {status === 'error' && loginType === 'account' && !submitting && (
           <LoginMessage
             content={intl.formatMessage({
@@ -95,7 +83,7 @@ const Login = (props) => {
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.username.placeholder',
-                defaultMessage: '用户名: admin or user',
+                defaultMessage: '用户名',
               })}
               rules={[
                 {
@@ -117,7 +105,7 @@ const Login = (props) => {
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.password.placeholder',
-                defaultMessage: '密码: ant.design',
+                defaultMessage: '密码',
               })}
               rules={[
                 {
@@ -219,7 +207,7 @@ const Login = (props) => {
             />
           </>
         )}
-        <div
+        {/* <div
           style={{
             marginBottom: 24,
           }}
@@ -234,14 +222,8 @@ const Login = (props) => {
           >
             <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
           </a>
-        </div>
+        </div> */}
       </ProForm>
-      <Space className={styles.other}>
-        <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式" />
-        <AlipayCircleOutlined className={styles.icon} />
-        <TaobaoCircleOutlined className={styles.icon} />
-        <WeiboCircleOutlined className={styles.icon} />
-      </Space>
     </div>
   );
 };
