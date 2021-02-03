@@ -22,7 +22,7 @@ const GlobalHeaderRight = (props) => {
 
   return (
     <div className={className}>
-      {/* <Avatar /> */}
+      <Avatar />
       <SelectLang className={styles.action} />
     </div>
   );
