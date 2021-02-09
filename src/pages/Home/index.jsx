@@ -7,7 +7,16 @@ import styles from './index.less';
 import { arrTrans, getRoutes } from '@/utils/utils';
 
 export default () => {
-  const routes = arrTrans(3, getRoutes());
+  const targetMenus = getRoutes();
+  const currentMenus = JSON.parse(localStorage.getItem('user')).menu.split(',');
+  let showMenus = [];
+  targetMenus.forEach((item) => {
+    if (currentMenus.includes(item.value.toString())) {
+      showMenus.push(item);
+    }
+  });
+
+  const routes = arrTrans(3,showMenus);
   return (
     <PageContainer>
       <Card>

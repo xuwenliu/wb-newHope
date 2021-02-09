@@ -38,36 +38,42 @@ export default [
                 icon: 'areaChart',
                 path: '/dataShow',
                 component: './DataShow',
+                key: 1,
               },
               {
                 name: 'data-query',
                 icon: 'search',
                 path: '/dataQuery',
                 component: './DataQuery',
+                key: 2,
               },
               {
                 name: 'data-upload',
                 icon: 'upload',
                 path: '/dataUpload',
                 component: './DataUpload',
+                key: 3,
               },
               {
                 name: 'data-config',
                 icon: 'setting',
                 path: '/dataConfig',
                 component: './DataConfig',
+                key: 4,
               },
               {
                 name: 'data-main',
                 icon: 'inbox',
                 path: '/dataMain',
                 component: './DataMain',
+                key: 5,
               },
               {
                 name: 'manger',
                 icon: 'user',
                 path: '/manger',
                 component: './Manger',
+                key: 6,
               },
 
               // {

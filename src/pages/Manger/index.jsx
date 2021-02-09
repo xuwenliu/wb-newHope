@@ -1,4 +1,4 @@
-import { Button, message, Input, Modal, Form, Checkbox } from 'antd';
+import { Button, message, Input, Modal, Form, Checkbox, Tag } from 'antd';
 import React, { useState, useRef } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -8,12 +8,13 @@ import { getUserList, addUser, updateUser, removeUser } from '@/services';
 import { getRoutes } from '@/utils/utils';
 
 const Manger = () => {
+  const initMenus = getRoutes();
   const intl = useIntl();
   const actionRef = useRef(null);
   const [visible, setVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [updateId, setUpdateId] = useState(null);
-  const [roles, setRoles] = useState(getRoutes());
+  const [roles, setRoles] = useState(initMenus);
 
   const [title, setTitle] = useState(
     intl.formatMessage({
@@ -66,6 +67,7 @@ const Manger = () => {
     const res = await func({
       id: updateId,
       ...values,
+      menu: values.menu.join(),
     });
     if (res) {
       message.success(
@@ -82,7 +84,7 @@ const Manger = () => {
   const columns = [
     {
       title: <FormattedMessage id="pages.user.userName" defaultMessage="用户名称" />,
-      dataIndex: 'userName',
+      dataIndex: 'userAccount',
     },
     {
       title: <FormattedMessage id="pages.user.password" defaultMessage="用户密码" />,
@@ -92,8 +94,19 @@ const Manger = () => {
 
     {
       title: <FormattedMessage id="pages.user.role" defaultMessage="可使用模块" />,
-      dataIndex: 'role',
+      dataIndex: 'menu',
       search: false,
+      render: (_, record) => {
+        const menus = record.menu.split(',');
+        let menuNames = [];
+        initMenus.forEach((item) => {
+          if (menus.includes(item.value.toString())) {
+            menuNames.push(item.label);
+          }
+        });
+
+        return menuNames.map((item) => <Tag key={item}>{item}</Tag>);
+      },
     },
     {
       title: '操作',
@@ -111,16 +124,6 @@ const Manger = () => {
   ];
 
   const queryList = async (params) => {
-    return {
-      data: [
-        {
-          id: 1001,
-          userName: '哈哈哈',
-          password: '123456',
-          role: '1,2,3',
-        },
-      ],
-    };
     const res = await getUserList({
       ...params,
     });
@@ -133,7 +136,7 @@ const Manger = () => {
     <PageContainer>
       <ProTable
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 80,
         }}
@@ -156,7 +159,7 @@ const Manger = () => {
         <Form form={form} labelCol={{ span: 6 }}>
           <Form.Item
             label={<FormattedMessage id="pages.user.userName" defaultMessage="用户名称" />}
-            name="userName"
+            name="userAccount"
             rules={[
               { required: true, message: intl.formatMessage({ id: 'pages.user.p_userName' }) },
             ]}
@@ -174,7 +177,7 @@ const Manger = () => {
           </Form.Item>
           <Form.Item
             label={<FormattedMessage id="pages.user.role" defaultMessage="可使用模块" />}
-            name="role"
+            name="menu"
             rules={[
               {
                 required: true,

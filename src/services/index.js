@@ -125,29 +125,27 @@ export async function updateMaterialAssayProject(data) {
 }
 
 // 用户管理
-export async function getUserList(data) {
-  return request('/api/user', {
-    method: 'POST',
-    data,
+export async function getUserList(params) {
+  return request('/api/newhope/user/list', {
+    params,
   });
 }
 
 export async function addUser(data) {
-  return request('/api/user/add', {
+  return request('/api/newhope/user/add', {
     method: 'POST',
     data,
   });
 }
 
-export async function removeUser(data) {
-  return request('/api/user/remove', {
-    method: 'POST',
-    data,
+export async function removeUser(params) {
+  return request('/api/newhope/user/remove', {
+    params,
   });
 }
 
 export async function updateUser(data) {
-  return request('/api/user/update', {
+  return request('/api/newhope/user/edit', {
     method: 'POST',
     data,
   });

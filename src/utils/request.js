@@ -47,4 +47,32 @@ const request = extend({
   // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });
+
+request.interceptors.request.use(async (url, options) => {
+  console.log(options);
+  if (options.params) {
+    if (options.params.current) {
+      // 这里统一处理 分页查询参数 后端需要的是 pageNum 和 pageSize 而框架自己的是 current和pageSize
+      // 并且后端要求page默认从0开始 所有下边减1
+      options.params.pageNum = options.params.current;
+      delete options.params.current;
+    }
+  }
+});
+
+request.interceptors.response.use(async (response, options) => {
+  let result;
+  const res = await response.clone().json();
+  if (response.status === 200 && res.code === 0) {
+    result = res;
+  } else {
+    // 界面报错处理
+    notification.error({
+      message: res.status,
+      description: res.msg,
+    });
+  }
+  return result;
+});
+
 export default request;

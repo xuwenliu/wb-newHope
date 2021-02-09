@@ -12,6 +12,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.jpg';
+import { getRoutes } from '@/utils/utils';
 
 const noMatch = (
   <Result
@@ -27,14 +28,19 @@ const noMatch = (
 );
 
 /** Use Authorized check all menu item */
-const menuDataRender = (menuList) =>
-  menuList.map((item) => {
-    const localItem = {
-      ...item,
-      children: item.children ? menuDataRender(item.children) : undefined,
-    };
-    return Authorized.check(item.authority, localItem, null);
+const menuDataRender = (menuList) => {
+  return menuList.map((item) => {
+    const currentMenus = JSON.parse(localStorage.getItem('user')).menu.split(',');
+    // 主页都有
+    if (item.key === '/home' || currentMenus.includes(item.key.toString())) {
+      const localItem = {
+        ...item,
+        children: item.children ? menuDataRender(item.children) : undefined,
+      };
+      return Authorized.check(item.authority, localItem, null);
+    }
   });
+};
 
 const defaultFooterDom = (
   <DefaultFooter
