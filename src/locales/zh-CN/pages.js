@@ -1,18 +1,23 @@
 export default {
   'pages.login.username.placeholder': '用户名',
+  'pages.login.username.required': '请输入用户名!',
   'pages.login.password.placeholder': '密码',
+  'pages.login.password.required': '请输入密码！',
   'pages.login.login': '登录',
   'pages.login.reset': '重置',
 
   'pages.add': '增加',
   'pages.update': '修改',
   'pages.delete': '删除',
+  'pages.delete_confirm': '您确定删除该项数据吗？',
   'pages.export': '导出',
   'pages.success': '操作成功',
   'pages.remark': '备注',
 
   'pages.dataQuery.checkPoint': '检测点',
   'pages.dataQuery.p_checkPoint': '请输入检测点',
+  'pages.dataQuery.linkSql': '中控链接SQL',
+  'pages.dataQuery.p_linkSql': '请输入中控链接SQL',
   'pages.dataQuery.materialCode': '物料编码',
   'pages.dataQuery.p_materialCode': '请输入物料编码',
   'pages.dataQuery.materialName': '物料名称',

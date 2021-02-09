@@ -1,4 +1,4 @@
-import { Button, message, Input, Modal, Form } from 'antd';
+import { Button, message, Input, Modal, Form, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
@@ -78,8 +78,8 @@ const Main = () => {
       );
       handleCancel();
       actionRef?.current?.reload();
-      setSubmitting(false);
     }
+    setSubmitting(false);
   };
 
   const columns = [
@@ -90,7 +90,7 @@ const Main = () => {
     },
     {
       title: <FormattedMessage id="pages.dataMain.mapCode" defaultMessage="映射编码" />,
-      dataIndex: 'mapCode',
+      dataIndex: 'mappingCode',
       search: false,
     },
 
@@ -106,24 +106,20 @@ const Main = () => {
         <Button key="update" size="small" onClick={() => handleUpdate(record)} type="success">
           <FormattedMessage id="pages.update" defaultMessage="修改" />
         </Button>,
-        <Button key="delete" size="small" onClick={() => handleRemove(record)} type="danger">
-          <FormattedMessage id="pages.delete" defaultMessage="删除" />
-        </Button>,
+        <Popconfirm
+          key="delete"
+          title={<FormattedMessage id="pages.delete_confirm" />}
+          onConfirm={() => handleRemove(record)}
+        >
+          <Button size="small" type="danger">
+            <FormattedMessage id="pages.delete" defaultMessage="删除" />
+          </Button>
+        </Popconfirm>,
       ],
     },
   ];
 
   const queryList = async (params) => {
-    return {
-      data: [
-        {
-          id: 1001,
-          materialCode: 1,
-          mapCode: 200,
-          materialDesc: 34,
-        },
-      ],
-    };
     const res = await getMaterialMainDataList({
       ...params,
     });
@@ -141,7 +137,7 @@ const Main = () => {
           defaultMessage: '物料主数据设置',
         })}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 80,
         }}
@@ -179,7 +175,7 @@ const Main = () => {
           </Form.Item>
           <Form.Item
             label={<FormattedMessage id="pages.dataMain.mapCode" defaultMessage="映射编码" />}
-            name="mapCode"
+            name="mappingCode"
             rules={[
               { required: true, message: intl.formatMessage({ id: 'pages.dataMain.p_mapCode' }) },
             ]}
@@ -196,7 +192,7 @@ const Main = () => {
               },
             ]}
           >
-            <Input />
+            <Input.TextArea rows={5} />
           </Form.Item>
         </Form>
       </Modal>

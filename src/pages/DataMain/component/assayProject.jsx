@@ -1,4 +1,4 @@
-import { Button, message, Input, Modal, Form } from 'antd';
+import { Button, message, Input, Modal, Form, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
@@ -79,8 +79,8 @@ const AssayProject = () => {
       );
       handleCancel();
       actionRef?.current?.reload();
-      setSubmitting(false);
     }
+    setSubmitting(false);
   };
 
   const columns = [
@@ -88,18 +88,18 @@ const AssayProject = () => {
       title: (
         <FormattedMessage id="pages.dataMain.checkProjectCode" defaultMessage="检测项目编码" />
       ),
-      dataIndex: 'checkProjectCode',
+      dataIndex: 'inspectionCode',
       search: false,
     },
     {
       title: (
         <FormattedMessage id="pages.dataMain.checkProjectDesc" defaultMessage="检测项目描述" />
       ),
-      dataIndex: 'checkProjectDesc',
+      dataIndex: 'inspectionDesc',
     },
     {
       title: <FormattedMessage id="pages.remark" defaultMessage="备注" />,
-      dataIndex: 'remark',
+      dataIndex: 'inspectionRemark',
       search: false,
     },
     {
@@ -110,24 +110,20 @@ const AssayProject = () => {
         <Button key="update" size="small" onClick={() => handleUpdate(record)} type="success">
           <FormattedMessage id="pages.update" defaultMessage="修改" />
         </Button>,
-        <Button key="delete" size="small" onClick={() => handleRemove(record)} type="danger">
-          <FormattedMessage id="pages.delete" defaultMessage="删除" />
-        </Button>,
+        <Popconfirm
+          key="delete"
+          title={<FormattedMessage id="pages.delete_confirm" />}
+          onConfirm={() => handleRemove(record)}
+        >
+          <Button size="small" type="danger">
+            <FormattedMessage id="pages.delete" defaultMessage="删除" />
+          </Button>
+        </Popconfirm>,
       ],
     },
   ];
 
   const queryList = async (params) => {
-    return {
-      data: [
-        {
-          id: 1001,
-          checkProjectCode: 1,
-          checkProjectDesc: '阿里',
-          remark: '噗呲噗呲',
-        },
-      ],
-    };
     const res = await getMaterialAssayProjectList({
       ...params,
     });
@@ -144,7 +140,7 @@ const AssayProject = () => {
           defaultMessage: '化验项目设置',
         })}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 100,
         }}
@@ -175,7 +171,7 @@ const AssayProject = () => {
                 defaultMessage="检测项目编码"
               />
             }
-            name="checkProjectCode"
+            name="inspectionCode"
             rules={[
               {
                 required: true,
@@ -192,7 +188,7 @@ const AssayProject = () => {
                 defaultMessage="检测项目描述"
               />
             }
-            name="checkProjectDesc"
+            name="inspectionDesc"
             rules={[
               {
                 required: true,
@@ -205,7 +201,7 @@ const AssayProject = () => {
 
           <Form.Item
             label={<FormattedMessage id="pages.remark" defaultMessage="备注" />}
-            name="remark"
+            name="inspectionRemark"
           >
             <Input.TextArea rows={4} />
           </Form.Item>

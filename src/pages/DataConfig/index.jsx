@@ -1,4 +1,4 @@
-import { Button, message, Input, Modal, Form } from 'antd';
+import { Button, message, Input, Modal, Form, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -73,8 +73,8 @@ const DataConfig = () => {
       );
       handleCancel();
       actionRef?.current?.reload();
-      setSubmitting(false);
     }
+    setSubmitting(false);
   };
 
   const columns = [
@@ -89,7 +89,12 @@ const DataConfig = () => {
 
     {
       title: <FormattedMessage id="pages.dataQuery.checkPoint" defaultMessage="检测点" />,
-      dataIndex: 'checkPoint',
+      dataIndex: 'location',
+      search: false,
+    },
+    {
+      title: <FormattedMessage id="pages.dataQuery.linkSql" defaultMessage="中控链接SQL" />,
+      dataIndex: 'linkSql',
       search: false,
     },
     {
@@ -100,24 +105,20 @@ const DataConfig = () => {
         <Button key="update" size="small" onClick={() => handleUpdate(record)} type="success">
           <FormattedMessage id="pages.update" defaultMessage="修改" />
         </Button>,
-        <Button key="delete" size="small" onClick={() => handleRemove(record)} type="danger">
-          <FormattedMessage id="pages.delete" defaultMessage="删除" />
-        </Button>,
+        <Popconfirm
+          key="delete"
+          title={<FormattedMessage id="pages.delete_confirm" />}
+          onConfirm={() => handleRemove(record)}
+        >
+          <Button size="small" type="danger">
+            <FormattedMessage id="pages.delete" defaultMessage="删除" />
+          </Button>
+        </Popconfirm>,
       ],
     },
   ];
 
   const queryList = async (params) => {
-    return {
-      data: [
-        {
-          id: 1001,
-          desc: 1,
-          code: 200,
-          checkPoint: 34,
-        },
-      ],
-    };
     const res = await getDataConfigList({
       ...params,
     });
@@ -130,7 +131,7 @@ const DataConfig = () => {
     <PageContainer>
       <ProTable
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 80,
         }}
@@ -171,7 +172,7 @@ const DataConfig = () => {
           </Form.Item>
           <Form.Item
             label={<FormattedMessage id="pages.dataQuery.checkPoint" defaultMessage="检测点" />}
-            name="desc"
+            name="location"
             rules={[
               {
                 required: true,
@@ -180,6 +181,19 @@ const DataConfig = () => {
             ]}
           >
             <Input />
+          </Form.Item>
+
+          <Form.Item
+            label={<FormattedMessage id="pages.dataQuery.linkSql" defaultMessage="中控链接SQL" />}
+            name="linkSql"
+            rules={[
+              {
+                required: true,
+                message: intl.formatMessage({ id: 'pages.dataQuery.p_linkSql' }),
+              },
+            ]}
+          >
+            <Input.TextArea rows={5} />
           </Form.Item>
         </Form>
       </Modal>

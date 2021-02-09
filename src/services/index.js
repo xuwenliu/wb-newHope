@@ -1,124 +1,123 @@
 import request from '@/utils/request';
 
 // 数据查询
-export async function getDataQueryList(data) {
+export async function getDataQueryList(params) {
   return request('/api/data/query', {
-    method: 'POST',
-    data,
+    params,
   });
 }
 
 // 近红外配置
-export async function getDataConfigList(data) {
-  return request('/api/data/config', {
-    method: 'POST',
-    data,
+export async function getDataConfigList(params) {
+  return request('/api/newhope/device/list', {
+    params,
   });
 }
 
 export async function addDataConfig(data) {
-  return request('/api/data/config/add', {
+  return request('/api/newhope/device/add', {
     method: 'POST',
     data,
   });
 }
 
-export async function removeDataConfig(data) {
-  return request('/api/data/config/remove', {
-    method: 'POST',
-    data,
+export async function removeDataConfig(params) {
+  return request('/api/newhope/device/remove', {
+    params,
   });
 }
 
 export async function updateDataConfig(data) {
-  return request('/api/data/config/update', {
+  return request('/api/newhope/device/edit', {
     method: 'POST',
     data,
   });
 }
 
 // 物料主数据设置
-export async function getMaterialMainDataList(data) {
-  return request('/api/material/main/data', {
-    method: 'POST',
-    data,
+export async function getMaterialMainDataListAll() {
+  return request('/api/newhope/material/all');
+}
+
+export async function getMaterialMainDataList(params) {
+  return request('/api/newhope/material/list', {
+    params,
   });
 }
 
 export async function addMaterialMainData(data) {
-  return request('/api/material/main/add', {
+  return request('/api/newhope/material/add', {
     method: 'POST',
     data,
   });
 }
 
-export async function removeMaterialMainData(data) {
-  return request('/api/material/main/remove', {
-    method: 'POST',
-    data,
+export async function removeMaterialMainData(params) {
+  return request('/api/newhope/material/remove', {
+    params,
   });
 }
 
 export async function updateMaterialMainData(data) {
-  return request('/api/material/main/update', {
+  return request('/api/newhope/material/edit', {
     method: 'POST',
     data,
   });
 }
 
 // 物料检测项目设置
-export async function getMaterialCheckProjectList(data) {
-  return request('/api/material/check/Project', {
-    method: 'POST',
-    data,
+export async function getMaterialCheckProjectList(params) {
+  return request('/api/newhope/materialInspection/list', {
+    params,
   });
 }
 
 export async function addMaterialCheckProject(data) {
-  return request('/api/material/check/Project/add', {
+  return request('/api/newhope/materialInspection/add', {
     method: 'POST',
     data,
   });
 }
 
-export async function removeMaterialCheckProject(data) {
-  return request('/api/material/check/Project/remove', {
-    method: 'POST',
-    data,
+export async function removeMaterialCheckProject(params) {
+  return request('/api/newhope/materialInspection/remove', {
+    params,
   });
 }
 
 export async function updateMaterialCheckProject(data) {
-  return request('/api/material/check/Project/update', {
+  return request('/api/newhope/materialInspection/edit', {
     method: 'POST',
     data,
   });
 }
 
 // 化验项目设置
-export async function getMaterialAssayProjectList(data) {
-  return request('/api/assay/Project', {
-    method: 'POST',
-    data,
+export async function getMaterialAssayProjectListAll() {
+  return request('/api/newhope/inspection/all');
+}
+
+export async function getMaterialAssayProjectList(params) {
+  return request('/api/newhope/inspection/list', {
+    params,
   });
 }
 
 export async function addMaterialAssayProject(data) {
-  return request('/api/assay/Project/add', {
+  return request('/api/newhope/inspection/add', {
     method: 'POST',
     data,
   });
 }
 
-export async function removeMaterialAssayProject(data) {
-  return request('/api/assay/Project/remove', {
-    method: 'POST',
-    data,
+export async function removeMaterialAssayProject(params) {
+  return request('/api/newhope/inspection/remove', {
+    params,
   });
 }
 
 export async function updateMaterialAssayProject(data) {
-  return request('/api/assay/Project/update', {
+  return request('/api/newhope/inspection/edit', {
     method: 'POST',
     data,
   });

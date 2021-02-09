@@ -97,7 +97,7 @@ const DataQuery = () => {
     <PageContainer>
       <ProTable
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 80,
         }}

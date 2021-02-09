@@ -1,5 +1,5 @@
-import { Button, message, Input, Modal, Form } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Button, message, Input, Modal, Form, Popconfirm, Select } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
 import { useIntl, FormattedMessage } from 'umi';
 import ProTable from '@ant-design/pro-table';
 
@@ -8,6 +8,8 @@ import {
   addMaterialCheckProject,
   updateMaterialCheckProject,
   removeMaterialCheckProject,
+  getMaterialAssayProjectListAll,
+  getMaterialMainDataListAll,
 } from '@/services';
 
 const CheckProject = () => {
@@ -16,6 +18,8 @@ const CheckProject = () => {
   const [visible, setVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [updateId, setUpdateId] = useState(null);
+  const [materialCodeList, setMaterialCodeList] = useState([]);
+  const [inspectionCodeList, setInspectionCodeList] = useState([]);
 
   const [title, setTitle] = useState(
     intl.formatMessage({
@@ -79,8 +83,8 @@ const CheckProject = () => {
       );
       handleCancel();
       actionRef?.current?.reload();
-      setSubmitting(false);
     }
+    setSubmitting(false);
   };
 
   const columns = [
@@ -95,7 +99,7 @@ const CheckProject = () => {
     },
     {
       title: <FormattedMessage id="pages.dataQuery.project" defaultMessage="检测项目" />,
-      dataIndex: 'project',
+      dataIndex: 'inspectionCode',
       search: false,
     },
     {
@@ -118,27 +122,31 @@ const CheckProject = () => {
         <Button key="update" size="small" onClick={() => handleUpdate(record)} type="success">
           <FormattedMessage id="pages.update" defaultMessage="修改" />
         </Button>,
-        <Button key="delete" size="small" onClick={() => handleRemove(record)} type="danger">
-          <FormattedMessage id="pages.delete" defaultMessage="删除" />
-        </Button>,
+        <Popconfirm
+          key="delete"
+          title={<FormattedMessage id="pages.delete_confirm" />}
+          onConfirm={() => handleRemove(record)}
+        >
+          <Button size="small" type="danger">
+            <FormattedMessage id="pages.delete" defaultMessage="删除" />
+          </Button>
+        </Popconfirm>,
       ],
     },
   ];
 
+  const queryMaterialAssayProjectListAll = async () => {
+    const res = await getMaterialAssayProjectListAll();
+    const sub = await getMaterialMainDataListAll();
+    setMaterialCodeList(sub.data);
+    setInspectionCodeList(res.data);
+  };
+
+  useEffect(() => {
+    queryMaterialAssayProjectListAll();
+  }, []);
+
   const queryList = async (params) => {
-    return {
-      data: [
-        {
-          id: 1001,
-          materialCode: 1,
-          mapCode: 200,
-          materialDesc: 34,
-          project: '阿里',
-          min: 1,
-          max: 100,
-        },
-      ],
-    };
     const res = await getMaterialCheckProjectList({
       ...params,
     });
@@ -156,7 +164,7 @@ const CheckProject = () => {
           defaultMessage: '物料检测项目设置',
         })}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 80,
         }}
@@ -182,7 +190,7 @@ const CheckProject = () => {
         <Form form={form} labelCol={{ span: 6 }}>
           <Form.Item
             label={<FormattedMessage id="pages.dataQuery.materialCode" defaultMessage="物料编码" />}
-            name="materialCode"
+            name="materialId"
             rules={[
               {
                 required: true,
@@ -190,29 +198,29 @@ const CheckProject = () => {
               },
             ]}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label={<FormattedMessage id="pages.dataMain.materialDesc" defaultMessage="物料描述" />}
-            name="materialDesc"
-            rules={[
-              {
-                required: true,
-                message: intl.formatMessage({ id: 'pages.dataMain.p_materialDesc' }),
-              },
-            ]}
-          >
-            <Input />
+            <Select>
+              {materialCodeList.map((item) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.materialCode}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Form.Item
             label={<FormattedMessage id="pages.dataQuery.project" defaultMessage="检测项目" />}
-            name="project"
+            name="inspectionId"
             rules={[
               { required: true, message: intl.formatMessage({ id: 'pages.dataQuery.p_project' }) },
             ]}
           >
-            <Input />
+            <Select>
+              {inspectionCodeList.map((item) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.inspectionCode}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Form.Item
