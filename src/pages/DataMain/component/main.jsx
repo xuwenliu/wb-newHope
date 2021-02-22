@@ -8,7 +8,9 @@ import {
   addMaterialMainData,
   updateMaterialMainData,
   removeMaterialMainData,
+  exportMaterialMainData
 } from '@/services';
+import { downloadFile } from '@/utils/utils';
 
 const Main = () => {
   const intl = useIntl();
@@ -16,6 +18,9 @@ const Main = () => {
   const [visible, setVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [updateId, setUpdateId] = useState(null);
+  const [queryParams, setQueryParams] = useState();
+
+
 
   const [title, setTitle] = useState(
     intl.formatMessage({
@@ -33,7 +38,18 @@ const Main = () => {
       }),
     );
   };
-  const handleExport = () => {};
+
+  const handleExport = async () => {
+    const res = await exportMaterialMainData(queryParams);
+    if(res.code === 0){
+      message.success(
+        intl.formatMessage({
+          id: 'pages.success',
+        }),
+      );
+      downloadFile(res.msg);
+    }
+  };
   const handleUpdate = (record) => {
     setVisible(true);
     setTitle(
@@ -120,6 +136,7 @@ const Main = () => {
   ];
 
   const queryList = async (params) => {
+    setQueryParams(params);
     const res = await getMaterialMainDataList({
       ...params,
     });

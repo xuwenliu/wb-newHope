@@ -10,7 +10,9 @@ import {
   removeMaterialCheckProject,
   getMaterialAssayProjectListAll,
   getMaterialMainDataListAll,
+  exportMaterialCheckProject
 } from '@/services';
+import { downloadFile } from '@/utils/utils';
 
 const CheckProject = () => {
   const intl = useIntl();
@@ -20,6 +22,7 @@ const CheckProject = () => {
   const [updateId, setUpdateId] = useState(null);
   const [materialCodeList, setMaterialCodeList] = useState([]);
   const [inspectionCodeList, setInspectionCodeList] = useState([]);
+  const [queryParams, setQueryParams] = useState();
 
   const [title, setTitle] = useState(
     intl.formatMessage({
@@ -37,7 +40,17 @@ const CheckProject = () => {
       }),
     );
   };
-  const handleExport = () => {};
+  const handleExport = async () => {
+    const res = await exportMaterialCheckProject(queryParams);
+    if(res.code === 0){
+      message.success(
+        intl.formatMessage({
+          id: 'pages.success',
+        }),
+      );
+      downloadFile(res.msg);
+    }
+  };
 
   const handleUpdate = (record) => {
     setVisible(true);
@@ -147,6 +160,7 @@ const CheckProject = () => {
   }, []);
 
   const queryList = async (params) => {
+	  setQueryParams(params)
     const res = await getMaterialCheckProjectList({
       ...params,
     });

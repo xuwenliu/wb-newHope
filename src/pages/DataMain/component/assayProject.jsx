@@ -8,7 +8,9 @@ import {
   addMaterialAssayProject,
   updateMaterialAssayProject,
   removeMaterialAssayProject,
+  exportInspection
 } from '@/services';
+import { downloadFile } from '@/utils/utils';
 
 const AssayProject = () => {
   const intl = useIntl();
@@ -16,6 +18,7 @@ const AssayProject = () => {
   const [visible, setVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [updateId, setUpdateId] = useState(null);
+  const [queryParams, setQueryParams] = useState();
 
   const [title, setTitle] = useState(
     intl.formatMessage({
@@ -33,7 +36,17 @@ const AssayProject = () => {
       }),
     );
   };
-  const handleExport = () => {};
+  const handleExport = async () => {
+    const res = await exportInspection(queryParams);
+    if(res.code === 0){
+      message.success(
+        intl.formatMessage({
+          id: 'pages.success',
+        }),
+      );
+      downloadFile(res.msg);
+    }
+  };
 
   const handleUpdate = (record) => {
     setVisible(true);
@@ -124,6 +137,7 @@ const AssayProject = () => {
   ];
 
   const queryList = async (params) => {
+    setQueryParams(params);
     const res = await getMaterialAssayProjectList({
       ...params,
     });

@@ -39,6 +39,13 @@ export async function getMaterialMainDataListAll() {
   return request('/api/newhope/material/all');
 }
 
+export async function exportMaterialMainData(data) {
+  return request('/api/newhope/material/export', {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function getMaterialMainDataList(params) {
   return request('/api/newhope/material/list', {
     params,
@@ -72,6 +79,13 @@ export async function getMaterialCheckProjectList(params) {
   });
 }
 
+export async function exportMaterialCheckProject(data) {
+  return request('/api/newhope/materialInspection/export', {
+    method: 'POST',
+    data,
+  });
+}
+
 export async function addMaterialCheckProject(data) {
   return request('/api/newhope/materialInspection/add', {
     method: 'POST',
@@ -95,6 +109,13 @@ export async function updateMaterialCheckProject(data) {
 // 化验项目设置
 export async function getMaterialAssayProjectListAll() {
   return request('/api/newhope/inspection/all');
+}
+
+export async function exportInspection(data) {
+  return request('/api/newhope/inspection/export', {
+    method: 'POST',
+    data,
+  });
 }
 
 export async function getMaterialAssayProjectList(params) {
