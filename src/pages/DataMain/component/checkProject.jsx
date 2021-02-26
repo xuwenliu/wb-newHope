@@ -33,6 +33,7 @@ const CheckProject = () => {
   const [form] = Form.useForm();
 
   const handleAdd = () => {
+    queryMaterialAssayProjectListAll();
     setVisible(true);
     setTitle(
       intl.formatMessage({
@@ -53,6 +54,7 @@ const CheckProject = () => {
   };
 
   const handleUpdate = (record) => {
+    queryMaterialAssayProjectListAll();
     setVisible(true);
     setTitle(
       intl.formatMessage({
@@ -112,7 +114,7 @@ const CheckProject = () => {
     },
     {
       title: <FormattedMessage id="pages.dataQuery.project" defaultMessage="检测项目" />,
-      dataIndex: 'inspectionCode',
+      dataIndex: 'inspectionName',
       search: false,
     },
     {
@@ -155,9 +157,6 @@ const CheckProject = () => {
     setInspectionCodeList(res.data);
   };
 
-  useEffect(() => {
-    queryMaterialAssayProjectListAll();
-  }, []);
 
   const queryList = async (params) => {
 	  setQueryParams(params)
@@ -215,7 +214,7 @@ const CheckProject = () => {
             <Select>
               {materialCodeList.map((item) => (
                 <Select.Option key={item.id} value={item.id}>
-                  {item.materialCode}
+                  {item.materialDesc}
                 </Select.Option>
               ))}
             </Select>
@@ -231,7 +230,7 @@ const CheckProject = () => {
             <Select>
               {inspectionCodeList.map((item) => (
                 <Select.Option key={item.id} value={item.id}>
-                  {item.inspectionCode}
+                  {item.inspectionDesc}
                 </Select.Option>
               ))}
             </Select>
